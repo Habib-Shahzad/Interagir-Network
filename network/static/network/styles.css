@@ -1,0 +1,331 @@
+body {
+    background:#222;
+    color: white;
+    font-size: 25px;
+}
+
+
+@import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+
+
+@import url('https://fonts.googleapis.com/css?family=Raleway:200');
+
+
+#colorful {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 560px;
+  height: 200px;
+  color: white;
+  font-family: 'Raleway';
+  font-size: 2.5rem;
+  position: relative;
+  left: 430px;
+}
+
+.gradient-border {
+  --borderWidth: 3px;
+  background: #1D1F20;
+  position: relative;
+  border-radius: var(--borderWidth);
+  padding-left:50px
+}
+
+
+.gradient-border:after {
+  content: '';
+  position: absolute;
+  top: calc(-1 * var(--borderWidth));
+  left: calc(-1 * var(--borderWidth));
+  height: calc(100% + var(--borderWidth) * 2);
+  width: calc(100% + var(--borderWidth) * 2);
+  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+  border-radius: calc(2 * var(--borderWidth));
+  z-index: -1;
+  animation: animatedgradient 3s ease alternate infinite;
+  background-size: 300% 300%;
+}
+
+
+@keyframes animatedgradient {
+    0% {
+        background-position: 0% 50%;
+    }
+    50% {
+        background-position: 100% 50%;
+    }
+    100% {
+        background-position: 0% 50%;
+    }
+}
+
+
+.preserve-3d {
+    transform-style: preserve-3d;
+    -webkit-transform-style: preserve-3d;
+}
+
+
+
+.editButton {
+  font-weight: bold; bottom:20px;
+  color: black;
+}
+
+.editting {
+  position: relative;
+  /* right: 350px; */
+}
+
+    *:focus {
+    outline: 0 !important;
+    }
+    * , button:focus, button::selection{ outline: none;  }
+
+    #post:focus, #post:hover, .editfield:focus, .editfield:hover {
+    background:#333 url(https://static.tumblr.com/maopbtg/a5emgtoju/inflicted.png) repeat;   
+    color: white;
+    width: 560px;
+    }
+
+    #post-it {
+      display: block; margin-left: auto; margin-right: auto;
+      position: relative;
+    }
+
+    .center {
+      display: block; margin-left: auto; margin-right: auto;
+    }
+
+
+    #post {
+    overflow: hidden; word-wrap: break-word; resize: none; height: 200px; width:560px;
+    background-color:#1D1F20;
+    color:white; font-weight:normal; font-size:21px;
+    resize:none;
+    line-height:25px;
+    padding-left:20px; padding-right:20px; padding-top:25px; padding-bottom:25px;
+    background-repeat:repeat-y, repeat;
+    border-top:1px solid #1D1F20; border-bottom:1px solid #FFF;
+    display: block; margin-left: auto; margin-right: auto;
+    position: relative;
+    }
+
+    .editfield {
+      box-shadow: 0 0 0 0.2rem rgba(186, 104, 200, .25);
+    overflow: hidden; word-wrap: break-word; height: 200px; width:660px;
+    background-color:#1D1F20;
+    color:white; font-weight:normal; font-size:21px;
+    line-height:25px;
+    padding-left:20px; padding-right:20px; padding-top:25px; padding-bottom:25px;
+    background-repeat:repeat-y, repeat;
+    border-top:1px solid #1D1F20; border-bottom:1px solid #FFF;
+    display: block; margin-left: auto; margin-right: auto;
+    position: relative;
+    right: 20px;
+    }
+
+    h3 {text-align: center; color: white; font-size: 30px;}
+
+
+    button:hover, button:active  {
+    border: 1px solid #140d50;
+    zoom: 1;
+    filter: alpha(opacity=80);
+    opacity: 0.8;
+    }
+
+    #all-posts {
+      border: 25px solid #B88846;
+  border-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='75' height='75'%3E%3Cg fill='none' stroke='%23B88846' stroke-width='2'%3E%3Cpath d='M1 1h73v73H1z'/%3E%3Cpath d='M8 8h59v59H8z'/%3E%3Cpath d='M8 8h16v16H8zM51 8h16v16H51zM51 51h16v16H51zM8 51h16v16H8z'/%3E%3C/g%3E%3Cg fill='%23B88846'%3E%3Ccircle cx='16' cy='16' r='2'/%3E%3Ccircle cx='59' cy='16' r='2'/%3E%3Ccircle cx='59' cy='59' r='2'/%3E%3Ccircle cx='16' cy='59' r='2'/%3E%3C/g%3E%3C/svg%3E") 25;
+        width: 1000px;
+        display: block;
+        margin-right: auto;
+        margin-left: auto;
+        padding-top: 35px;
+        font-family: 'Raleway';
+    }
+
+    .box {
+        background:#333 url(https://static.tumblr.com/maopbtg/a5emgtoju/inflicted.png); 
+        width: 700px;
+        border: 1px solid rgb(238, 232, 232);
+        border-radius: 5px;
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+        font-size: 21px;
+        font-weight: bold;
+        color: white;
+        padding-left: 25px;
+        min-height: 150px;
+        height: auto;
+        overflow-wrap: break-word;
+    }
+
+
+
+.container {
+  width: 1px;
+  height: 1px;
+  position: relative;
+  right: 400px;
+}
+
+.container .love {
+  font-size: 0.9rem;
+  color: #ff4f8f;
+}
+.container .wrapper {
+  padding-top: 50px;
+}
+.container .wrapper .like-button {
+  position: relative;
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #ccc;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  margin: 0 auto;
+  text-decoration: none;
+  overflow: hidden;
+}
+.container .wrapper .like-button .like-overlay {
+  display: block;
+  position: absolute;
+  top: 0; left: 0; width: 50px; height: 50px;
+  border-radius: 50%;
+  background: #ff4f8f;
+  -webkit-transform: scale(0); transform: scale(0);
+  -webkit-transition: all .4s; transition: all .4s;
+  z-index: 0;
+}
+.container .wrapper .like-button i.not-liked {
+  display: block;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+.container .wrapper .like-button i.is-liked {
+  display: none;
+  color: #fff;
+  position: relative;
+  z-index: 1;
+}
+.container .wrapper .like-button.is-active .like-overlay {
+  -webkit-transform: scale(1); transform: scale(1);
+}
+.container .wrapper .like-button.is-active i.not-liked {
+  display: none;
+}
+.container .wrapper .like-button.is-active i.is-liked {
+  display: block;
+}
+
+@keyframes bouncy {
+  from, to {
+    -webkit-transform: scale(1, 1);
+  }
+  25% {
+    -webkit-transform: scale(0.9, 1.1);
+  }
+  50% {
+    -webkit-transform: scale(1.1, 0.9);
+  }
+  75% {
+    -webkit-transform: scale(0.95, 1.05);
+  }
+}
+
+@keyframes bouncy {
+  from, to {
+    -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
+  }
+  25% {
+    -webkit-transform: scale(0.9, 1.1);
+            transform: scale(0.9, 1.1);
+  }
+  50% {
+    -webkit-transform: scale(1.1, 0.9);
+            transform: scale(1.1, 0.9);
+  }
+  75% {
+    -webkit-transform: scale(0.95, 1.05);
+            transform: scale(0.95, 1.05);
+  }
+}
+
+.link-button {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: #6dacff;
+  position: absolute;
+  bottom: 20px;
+  right: 20px;
+  display: -webkit-box;
+  display: flex;
+  -webkit-box-pack: center;
+          justify-content: center;
+  -webkit-box-align: center;
+          align-items: center;
+  -webkit-transition: all .4s;
+  transition: all .4s;
+}
+.link-button img {
+  width: 32px;
+  height: 32px;
+  display: block;
+}
+.link-button:hover {
+  -webkit-transform: scale(1.1) rotate(180deg);
+          transform: scale(1.1) rotate(180deg);
+  background: #ff4f8f;
+}
+
+.fade-out {
+  animation: fade 2s;
+  -webkit-animation: fade 2s;
+  -moz-animation: fade 2s;
+}
+
+/* Animate opacity */
+@keyframes fade {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+@-moz-keyframes fade {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+@keyframes fade {
+  from { opacity: 1 }
+  to { opacity: 0 }
+}
+
+
+#followers {
+  color: white;
+  font-weight: bold; 
+  font-size: 24px;
+  position: relative;
+  left: 780px;
+  top: 130px;
+}
+
+#following {
+  color: white;
+  font-weight: bold;
+  font-size: 24px;
+  position: relative; 
+  left: 960px;
+  top: 94px;
+}
+

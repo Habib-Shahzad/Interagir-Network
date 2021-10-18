@@ -1,0 +1,395 @@
+{% extends "network/auctionsLayout.html" %}
+
+{% block body %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+
+<style>
+    img {
+        height: 250px;
+    }
+
+    #info {
+       font-family: sans-serif; 
+        font-weight: bold;
+        font-size: larger;}
+
+    #price {
+        font-weight: bold;
+        font-size: 26px;
+        font-family: sans-serif;
+    }
+
+    input::selection, input:focus, textarea::selection, textarea:focus{
+        outline: none;
+    }
+    textarea {
+        width: 700px;
+        height: 100px;
+    }
+
+    input {
+        width: 600px;
+        border: 1px silver solid;
+        padding: 5px;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+    button {
+            background-color: rgb(32, 32, 99);
+            color: white;
+            height: 40px;
+            width: 140px;
+            text-align: center;
+            border:1px solid #F2F2F2;
+            border-radius: 5px;
+            font-family: Arial;
+        }
+
+    button:hover {
+            border: 1px solid #140d50;
+            font-weight: bold;
+            }
+        
+    .box {
+        width: 800px;
+        border: 1px solid rgb(34, 50, 61);
+        height: 100px;
+        position: relative;
+        border-radius: 5px;
+        }
+
+    #end {
+        width: 160px;
+        position: relative;
+        left: 350px;
+        bottom: 40px;
+    }
+
+    .watch {
+        width: 240px;
+    }
+
+
+</style>
+
+<h3>Listing: {{listing.title}}</h3>
+
+
+<form id='endAuction' onsubmit="endAuction();">
+{% if owner %}
+    {% if not ended %}
+        {% csrf_token %}
+    <button id='end' type="submit"> End Auction </button>
+    {% endif %}
+
+{% endif %}
+</form>
+
+
+{% if not user.is_authenticated  %}
+    <div class="alert alert-danger" role="alert">
+        You must be signed in to add this item to your watchlist.
+    </div> 
+{% else %}
+
+
+
+{% endif %}
+
+
+    <div id="addedWatch" style="display: none;" class="alert alert-success"role="alert">
+        Item Successfully added to your watchlist.
+    </div>
+
+    <div id="removedWatch" style="display: none;" class="alert alert-danger"role="alert">
+        Item Successfully removed from your watchlist.
+    </div>
+
+
+    <div id ='less_bid' style="display: none;" class="alert alert-danger" role="alert">
+        The Bid must be greater than $<label id="highestBid"></label>
+    </div> 
+
+    <div id='empty_bid' style="display: none;" class="alert alert-danger" role="alert">
+        Please type a valid bid.
+    </div> 
+
+    <div id='success_bid' style="display: none;" class="alert alert-success" role="alert">
+        Bit of <label id="addedBid"></label> successfully added. 
+    </div> 
+
+
+    <div id='empty_comment' style="display: none;" class="alert alert-danger" role="alert">
+        Comment field cannot be empty.
+     </div> 
+
+    <div id='success_comment' style="display: none;" class="alert alert-success" role="alert">
+       Comment successfully added. 
+    </div> 
+
+    
+    <input type="hidden" id="addorRemoveWatch" value=" {{already}}">
+
+    <form id="addWatchlist" onsubmit="addWatchlist();" method="POST">
+        {% csrf_token %}
+        {% if already %}
+            <button id="watchButton" class='watch' type="submit">Remove from Watchlist</button>
+        {% else %}
+            <button id="watchButton" class='watch' type="submit">Add to Watchlist</button>
+        {% endif %}
+    </form>
+
+
+
+<input id="listingID" type="hidden" value="{{listing.id}}" >
+
+<img src = {{listing.image}}>
+<br>
+<div id = 'info'>{{listing.description}}</div>
+<br>
+<div id='price'>${{listing.price}}</div>
+<br>
+
+<form id="placedBidForm" method='post' onsubmit="addBid();"></form>
+{% if user.is_authenticated and not ended %}
+
+    {% if owner %}
+    {{count}} Bid(s) so far. The highest bid right now is ${{highest}} which was placed by {{person.user.username}}
+    {% else %}
+    
+        {% csrf_token %}
+        <label id="bidCount">{{count}}</label> Bid(s) so far. Your bid is the current bid.
+        <br>
+        <input id="myBid" placeholder="Your Bid" name='bid'>
+    <button class="final" type="submit" >
+    Place Bid
+    </button>
+    {% endif %}
+
+{% endif %}
+</form>
+
+
+{% if not user.is_authenticated %}
+    <div class="alert alert-danger" role="alert">
+        You Must be signed in to place a bid.
+    </div> 
+{% endif %}
+
+
+
+{% if ended and person.user.username %}
+    <div class="alert alert-danger" role="alert">
+        This aucition has ended, {{person.user.username}} won with bid: ${{highest}}
+    </div> 
+{% endif %}
+
+{% if ended and not person.user.username %}
+    <div class="alert alert-danger" role="alert">
+        This aucition has ended, No one won this bid.
+    </div> 
+{% endif %}
+
+
+<h5>Details</h5>
+<ul>
+    <li> Listed by {{listing.user}}</li>
+    <li> Category:<a href="/viewbycategory/{{listing.category.name}}"> {{listing.category.name}} </a></li>
+</ul>
+
+{% if not user.is_authenticated  %}
+    <div class="alert alert-danger" role="alert">
+        You must be signed in to place a comment.
+    </div> 
+{% else %}
+
+<form id="commentForm" onsubmit="addComment();" method="post">
+    {% csrf_token %}
+    <textarea id="myComment" name='comment' placeholder="Write a Comment....."></textarea>
+    <br>
+    <button type="submit">submit</button>
+</form>
+{% endif %}
+
+
+<h4>Comments:</h4>
+
+<input id="LengthComments" value="{{comments|length}}" type="hidden" />
+
+<div id="zero_comments" style="display: none;" class="alert alert-danger" role="alert">
+    There are no comments on this listing. 
+</div> 
+
+
+<div id="allComments">
+    {% for comment in comments %}
+    {{comment.user.username}}:
+    <div class="box">
+    {{comment.comment}}    
+    </div>
+    {% endfor %}
+</div>
+
+
+
+{% endblock %}
+
+{% block script %}
+    <script>
+        
+        var LengthComments = document.getElementById('LengthComments').value;
+        if (LengthComments == 0) {
+            document.getElementById('zero_comments').style.display = 'block';
+        }
+        else {
+            document.getElementById('zero_comments').style.display = 'none';
+        }
+
+        document.getElementById("commentForm").addEventListener("submit", function(event){
+            event.preventDefault()
+        });
+
+        document.getElementById("addWatchlist").addEventListener("submit", function(event){
+            event.preventDefault()
+        });
+        
+        document.getElementById("placedBidForm").addEventListener("submit", function(event){
+            event.preventDefault()
+        });
+
+        document.getElementById("endAuction").addEventListener("submit", function(event){
+            event.preventDefault()
+        });
+
+
+        function endAuction() {
+
+            var id = document.getElementById('listingID').value;
+            fetch(`/endauction/${id}`);
+
+            document.location.reload();
+        }
+
+        function addComment() {
+            var id = document.getElementById('listingID').value;
+            var comment = document.getElementById('myComment').value;
+
+            document.getElementById('myComment').value = '';
+
+            var invalid = comment === '';
+
+            if (invalid) {
+                document.getElementById('empty_comment').style.display = 'block';
+                document.getElementById('success_comment').style.display = 'none';
+            }
+            
+            else {
+                document.getElementById('zero_comments').style.display = 'none';
+                document.getElementById('empty_comment').style.display = 'none';
+                document.getElementById('success_comment').style.display = 'block';
+            }
+
+            console.log(invalid); 
+           
+            fetch(`/comment/${id}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain', },
+                body: JSON.stringify({
+                    comment: comment
+                })
+            })
+
+            .then(response => response.json())
+            .then(result => { 
+                document.getElementById('allComments').innerHTML = '';
+                result.forEach((element) => {
+                    var div = document.createElement('div');
+                    div.innerHTML = `
+                            ${element.user}:
+                            <div class="box">
+                            ${element.comment}    
+                            </div>
+                            `
+                    document.getElementById('allComments').appendChild(div);
+                })
+            })
+        }
+
+        
+        function addBid() {
+            var id = document.getElementById('listingID').value;
+            var bid = document.getElementById("myBid").value;
+
+            fetch(`/bid/${id}`, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain', },
+                body: JSON.stringify({
+                    bid: bid
+                })
+            })
+
+            .then(response => response.json())
+            .then(result => {
+                document.getElementById('bidCount').innerHTML = `${result.count}`;
+                document.getElementById('highestBid').innerHTML = `${result.highest}`;
+
+                document.getElementById('addedBid').innerHTML = `${bid}`;
+                document.getElementById('myBid').value = '';
+
+                if (result.invalid) {
+                    document.getElementById('empty_bid').style.display = 'block';
+                }
+                else {
+                    document.getElementById('empty_bid').style.display = 'none';
+                }
+
+                if (result.less_bid) {
+                    document.getElementById('less_bid').style.display = 'block';
+                }
+                else {
+                    document.getElementById('less_bid').style.display = 'none';
+                }
+
+                if (result.added) {
+                    document.getElementById('success_bid').style.display = 'block';
+                }
+                else {
+                    document.getElementById('success_bid').style.display = 'none';
+                }
+
+
+            })
+        
+        }
+
+        function addWatchlist() {
+
+            var already = document.getElementById('addorRemoveWatch').value;
+            var id = document.getElementById('listingID').value;
+
+            if (already == 1) {
+                fetch(`/removewatch/${id}`)
+                document.getElementById('watchButton').innerHTML = 'Add to Watchlist';
+                document.getElementById('addorRemoveWatch').value = 0;
+
+                document.getElementById('addedWatch').style.display = 'none';
+                document.getElementById('removedWatch').style.display = 'block';
+            }
+
+            else {
+                fetch(`/watchlist/${id}`)
+                document.getElementById('removedWatch').style.display = 'none';
+                document.getElementById('addedWatch').style.display = 'block';
+
+                document.getElementById('watchButton').innerHTML = 'Remove from Watchlist';
+                document.getElementById('addorRemoveWatch').value = 1;
+            }
+
+
+        }
+
+
+    </script>
+{% endblock %}

@@ -1,0 +1,330 @@
+{% extends "network/layout.html" %}
+
+
+{% block style %}
+
+{% load static %}
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+{% endblock %}
+
+{% block body %}
+<div id="docbody">
+  <input id="username" type="hidden" value={{user}} />
+
+  {% if user.is_authenticated %}
+
+  <div id="make-post">
+    <h3>Write a post</h3>
+
+    <textarea spellcheck="false" id="post" placeholder="what are you thinking?" class="form-control"
+      aria-label="With textarea"></textarea>
+    <button id="post-it" type="button" class="btn btn-primary">Add Post</button>
+
+  </div>
+
+  {% else %}
+  <br><br>
+  <div style="text-align: center;" class="alert alert-danger" role="alert">
+    You need to be Logged in to make a post or like a post!
+  </div>
+  {% endif %}
+
+  <div id="added"></div>
+
+  <h3 id="heading">All Posts</h3>
+
+  <div id="all-posts">
+
+    {% for element in posts %}
+
+
+    {% if user.is_authenticated %}
+    <div id="{{element.id}}numLikes" class="elementLikes"> {{element.likes}} </div>
+    <div class="container">
+      <div class="wrapper">
+        <a id="{{element.id}}likeButton" onclick="toggleLike(this.id); addlike(this.id)" href="javascript:void(0);"
+          class="like-button">
+          <i class="material-icons not-liked bouncy">favorite_border</i>
+          <i class="material-icons is-liked bouncy">favorite</i>
+          <span class="like-overlay"></span>
+        </a>
+
+      </div>
+    </div>
+    {% endif %}
+
+    <div id='{{element.id}}Post' style="padding-left:150px;">
+      <div class="gradient-border">
+        {% if user.is_authenticated %}
+        <div> <a href="profile/{{element.user}}" class="elusername"> {{element.user}} </a> <br>
+          {% else %}
+          <div> <a class="elusername"> {{element.user}} </a> <br>
+            {% endif %}
+            {% if user == element.user %}
+            <a id="{{element.id}}editLink" onclick="editPost(this.id)" href="javascript:void(0)"> Edit</a>
+            {% endif %}
+            <div>
+              <textarea spellcheck="false" id="{{element.id}}EditField" placeholder="Edit Post" style="display: none;"
+                class="form-control" aria-label="With textarea"></textarea>
+              <button id="{{element.id}}editButton" style="display: none;" type="button" onclick='edit(this.id)'
+                class="btn btn-primary">Save Changes</button>
+            </div>
+          </div>
+          <div id="{{element.id}}content" class="elemPost">{{element.post}}</div>
+          <div class="elemTimeStamp">{{element.timestamp}}</div>
+        </div>
+      </div>
+
+      <br>
+
+      {% endfor %}
+    </div>
+
+  </div>
+
+
+  {% endblock %}
+
+
+  {% block script %}
+
+  {% if user.is_authenticated %}
+  <script language="javascript">
+
+
+    function toggleLike(id) {
+      $(`#${id}`).toggleClass('is-active');
+    }
+
+    document.addEventListener('DOMContentLoaded', function () {
+      document.querySelector('#post-it').addEventListener('click', () => addpost());
+      likePosts();
+    });
+
+
+
+    function addlike(id) {
+
+      var active = $(`#${id}`).hasClass('is-active');
+      id = id.replace("likeButton", "");
+
+      if (active) {
+        var count = $(`#${id}numLikes`).html();
+        $(`#${id}numLikes`).html(parseInt(count) + 1)
+      }
+
+      else {
+        var count = $(`#${id}numLikes`).html();
+        $(`#${id}numLikes`).html(parseInt(count) - 1)
+      }
+
+      fetch(`/addlike/${id}`, {
+        method: 'POST',
+        body: JSON.stringify({
+          active: active
+        })
+      })
+
+        .then(response => response.json())
+        .then(result => {
+          console.log(result)
+        })
+    }
+
+
+    function addpost() {
+      event.preventDefault();
+
+      var user = document.querySelector('#username').value
+      const post = document.querySelector('#post').value
+
+      if (post == "") {
+        poster(false)
+      }
+      else {
+        poster(true);
+        ;
+
+        $('#post').val('');
+
+        fetch('/addpost', {
+          method: 'POST',
+          headers: { 'Content-Type': 'text/plain', },
+          body: JSON.stringify({
+            post: post
+          })
+        })
+
+
+          .then(response => response.json())
+          .then(element => {
+
+            var div = document.createElement(div);
+            div.innerHTML =
+              `
+    <div id="${element.id}numLikes" class = "elementLikes"> ${element.likes} </div>
+        <div class="container">
+            <div class="wrapper">
+                <a id="${element.id}likeButton"  onclick = "toggleLike(this.id); addlike(this.id)" href="javascript:void(0);" class="like-button">
+                <i class="material-icons not-liked bouncy">favorite_border</i>
+                <i class="material-icons is-liked bouncy">favorite</i>
+                <span class="like-overlay"></span>
+                </a>
+
+            </div>
+        </div>
+
+        <div id='${element.id}Post'  style="padding-left:150px;" >
+            <div class="gradient-border">
+            <div> <a class="elusername" href="profile/${element.user}"> ${element.user} </a> <br>
+                <a id="${element.id}editLink" onclick="editPost(this.id)" href="javascript:void(0)"> Edit</a>
+                <div>
+                  <textarea  spellcheck="false" id="${element.id}EditField" placeholder="Edit Post" style="display: none;" class="form-control" aria-label="With textarea"></textarea>
+                  <button id="${element.id}editButton" style="display: none;" type="button"  onclick='edit(this.id)' class="btn btn-primary">Save Changes</button>
+                </div>
+            </div>
+            <div id="${element.id}content" class="elemPost" >${element.post}</div>
+            <div class="elemTimeStamp" >${element.timestamp}</div>
+            </div>
+        </div>
+    `
+            if (user == element.user) {
+            }
+            else { $(`#${element.id}editLink`).html('') }
+            document.querySelector('#all-posts').prepend(div);
+
+          })
+
+
+      }
+    }
+
+
+    function poster(p) {
+
+      if (p) {
+        var div = document.createElement(div);
+        div.innerHTML = '<div id="banner" style="text-align:center" class="center" class="alert alert-success" role="alert"> Post successfully added </div>'
+        document.querySelector("#added").appendChild(div);
+      }
+
+      else {
+        var div = document.createElement(div);
+        div.innerHTML = '<div id="banner" style="text-align:center" class="alert alert-danger" role="alert"> Post could not be added </div>'
+        document.querySelector("#added").appendChild(div);
+      }
+
+      const elementToFade = document.getElementById('banner');
+
+      elementToFade.onanimationend = (e) => {
+        if (e.srcElement.classList.contains('fade-out')) {
+          elementToFade.parentNode.removeChild(elementToFade);
+        }
+      };
+
+      if (p) {
+        setTimeout(function () {
+          elementToFade.classList.add('fade-out');
+        }, 2000);
+      }
+
+      else {
+        setTimeout(function () {
+          elementToFade.classList.add('fade-out');
+        }, 2000);
+      }
+    }
+
+
+    function isliked(id) {
+      fetch('likes')
+        .then(response => response.json())
+        .then(result => {
+          result.forEach((element) => {
+            if (id == element) {
+              $(`#${element}likeButton`).toggleClass('is-active');
+            }
+          })
+
+        });
+    }
+
+
+
+    function editPost(id) {
+
+      var postId = id.replace("editLink", "");
+
+      document.getElementById(`${postId}EditField`).style.display = 'block';
+      document.getElementById(`${postId}editButton`).style.display = 'block';
+
+      fetch(`posts/${postId}`)
+        .then(response => response.json())
+        .then(result => {
+          document.getElementById(`${postId}EditField`).value = `${result.post}`;
+        })
+
+    }
+
+
+    function edit(idB) {
+      var id = idB.replace("editButton", "");
+
+      var post = document.getElementById(`${id}EditField`).value;
+
+      fetch(`edit/${id}`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'text/plain', },
+        body: JSON.stringify({
+          post: post
+        })
+      })
+
+      fetch(`posts/${id}`)
+        .then(response => response.json())
+        .then(result => {
+          $(`#${id}content`).html(`
+   ${post}
+  `);
+
+        });
+
+      document.getElementById(`${id}EditField`).style.display = 'none';
+      document.getElementById(`${id}editButton`).style.display = 'none';
+
+    }
+
+
+    function likePosts() {
+      var user = document.querySelector('#username').value;
+
+      fetch(`posts`)
+        .then(response => response.json())
+        .then(result => {
+          result.forEach((element) => {
+            isliked(`${element.id}`);
+          })
+        })
+
+    }
+
+  </script>
+
+  {% else %}
+
+
+  <script>
+
+
+
+  </script>
+
+
+  {% endif %}
+
+  {% endblock %}

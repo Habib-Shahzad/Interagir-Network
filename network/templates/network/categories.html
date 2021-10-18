@@ -1,0 +1,27 @@
+{% extends "network/auctionsLayout.html" %}
+
+{% block body %}
+
+<style>
+
+#ok {
+    font-size: 26px;
+    font-weight: bold;
+}
+
+</style>
+
+<h3>Categories:</h3>
+
+{% for category in categories %}
+    <ul>
+        <li>
+    <div id='ok'>
+       <a href='/viewbycategory/{{category.name}}'>{{category.name}}</a>
+    </div>
+        </li>
+    </ul>
+    
+{% endfor %}
+
+{% endblock %}

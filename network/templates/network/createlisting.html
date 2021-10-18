@@ -1,0 +1,93 @@
+{% extends "network/auctionsLayout.html" %}
+
+{% block body %}
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
+    <style>
+
+    h2 { position: relative; left:600px; bottom: 10px; }
+
+    input, textarea, input::selection, input:focus, textarea:focus, textarea::selection {
+        position: relative;
+        left: 450px;
+        width: 500px;
+        outline: none}
+
+    textarea { height: 150px;}
+
+    button {
+        background-color: teal;
+        font-family: Arial, Helvetica;
+        border: 1px solid white;
+        border-radius: 5px;
+        color: white;
+        text-align: center;
+        width: 80px;
+        height: 37px;
+        position: relative;
+        left: 655px; }
+
+    button:hover {
+        border: 1px solid #D8D8D8;
+        font-weight: bold; }
+
+
+    </style>
+        {% if error %}
+        <div class="alert alert-danger" role="alert">
+            Please type a valid number for the price!
+        </div> 
+        {% endif %}
+
+    <h2>Create Listing</h2>
+    <form id="createListing" onsubmit = "create();"  method="post">
+        {% csrf_token %}
+        <div><input id="title" placeholder="Title" name='title'></div> <br>
+        <div><input id="bid" placeholder="Starting Bid" name='bid'></div> <br>
+        <div><input id="image" placeholder="Image Path" name='image'></div> <br>
+        <div style="text-align: center; width: 200px;">
+            <select id="category" name="category" class="form-select" aria-label="Default select example">
+                <option disabled selected>Select a cateory</option>
+                {% for category in categories %}
+                    <option value="{{category.name}}">{{category.name}}</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div><textarea id="description" placeholder="Description" name=description></textarea></div>
+        <button type="submit">Submit</button>
+    </form>
+
+{% endblock %}
+
+{% block script %}
+<script>
+    document.getElementById("createListing").addEventListener("submit", function(event){
+                event.preventDefault()
+            });
+
+    function create() {
+
+        fetch(`/create`, {
+                method: 'POST',
+                headers: {'Content-Type': 'text/plain', },
+                body: JSON.stringify({
+                    title: document.getElementById("title").value, 
+                    bid: document.getElementById("bid").value, 
+                    image: document.getElementById("image").value, 
+                    category: document.getElementById("category").value, 
+                    description: document.getElementById("description").value, 
+
+                })
+            })
+                    document.getElementById("title").value = ''; 
+                    document.getElementById("bid").value = ''; 
+                    document.getElementById("image").value = '';
+                    document.getElementById("category").value = '';
+                    document.getElementById("description").value = '';
+
+    }
+
+
+</script>
+
+{% endblock %}

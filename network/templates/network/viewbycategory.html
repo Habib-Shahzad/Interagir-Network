@@ -1,0 +1,72 @@
+{% extends "network/auctionsLayout.html" %}
+
+{% block body %}
+
+<style>
+    img {
+        position: relative;
+        height: 250px;
+        left: 60px;
+    }
+
+    .box {
+        width: 1200px;
+        border: 1px solid rgb(238, 232, 232);
+        height: 253px;
+        position: relative;
+        right: 30px;
+        border-radius: 5px;
+        }
+
+    #title{
+        position: relative;
+        bottom: 230px;
+        left: 550px;
+        font-weight: bold;
+        font-family: Arial;
+    }
+    #price {
+        position: relative;
+        bottom: 240px;
+        left: 550px;
+        font-weight: bold;
+        font-size: 15px;
+        font-family: Helvetica;
+    }
+
+    #info {
+        position: relative;
+        bottom: 180px;
+        left: 550px;
+        font-family: Arial, Helvetica, sans-serif;
+    }
+
+
+    #head {
+        position: relative;
+        left: 600px;
+    }
+
+    
+
+</style>
+
+
+    <h2 id='head'> {{ category }} </h2>
+
+    {% for listing in listings %}
+        <ul>
+            <a href="/listings/{{listing.id}}">
+            <div style="display:inline-block;" class='box'>
+                <img src = "{{listing.image}}" >
+                <div id = 'title'>{{listing.title}}</div>
+                <div id = 'info'>{{listing.description}}</div>
+                <div id = 'price'>Price: ${{listing.price}}</div>
+                <div id='title>'>{{time}}</div>
+            </div>
+            </a> 
+        </ul>
+    {% endfor %}
+
+
+{% endblock %}
