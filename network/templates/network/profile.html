@@ -18,47 +18,60 @@
     <h3 id="heading">Profile Posts</h3>
 
     <div id="all-posts">
-      
+
       {% for element in posts %}
-     
-      {% if user.is_authenticated %}
-        <div id="{{element.id}}numLikes" class = "elementLikes"> {{element.likes}} </div>
+  
+      <div id='{{element.id}}Post'>
+  
+        <div class="postContents" class="card" style="width: 28rem;color: black;">
+          <div class="card-body">
+            {% if user.is_authenticated %}
+            <a href="profile/{{element.user}}" class="card-title"> {{element.user}} </a>
+            {% else %}
+            <a class="card-title">{{element.user}}</a>
+            {% endif %}
+            {% if user == element.user %}
+            <div> <a id="{{element.id}}editLink" class="btn btn-primary" onclick="editPost(this.id)"
+                href="javascript:void(0)"> Edit</a> </div>
+            {% endif %}
+  
+            <div>
+              <textarea spellcheck="false" id="{{element.id}}EditField" placeholder="Edit Post" style="display: none;"
+                class="form-control" aria-label="With textarea"></textarea>
+              <button id="{{element.id}}editButton" style="display: none;" type="button" onclick='edit(this.id)'
+                class="btn btn-primary">Save Changes</button>
+            </div>
+  
+            <p id="{{element.id}}content" class="card-text">{{element.post}}</p>
+            <div class="elemTimeStamp">{{element.timestamp}}</div>
+          </div>
+  
+        </div>
+  
+        {% if user.is_authenticated %}
+  
         <div class="container">
-            <div class="wrapper">
-                <a id="{{element.id}}likeButton"  onclick = "toggleLike(this.id); addlike(this.id)" href="javascript:void(0);" class="like-button">
-                <i class="material-icons not-liked bouncy">favorite_border</i>
-                <i class="material-icons is-liked bouncy">favorite</i>
-                <span class="like-overlay"></span>
-                </a>
-            </div>
+          <div class="wrapper">
+            <a id="{{element.id}}likeButton" onclick="toggleLike(this.id); addlike(this.id)" href="javascript:void(0);"
+              class="like-button">
+              <i class="material-icons not-liked bouncy">favorite_border</i>
+              <i class="material-icons is-liked bouncy">favorite</i>
+              <span class="like-overlay"></span>
+            </a>
+  
+          </div>
         </div>
+  
         {% endif %}
-
-        <div id='{{element.id}}Post'  style="padding-left:150px;" >
-            <div class="gradient-border">
-              {% if user.is_authenticated %}
-            <div> <a class="elusername"> {{element.user}} </a> <br>
-              {% else %}
-              <div> <a class="elusername"> {{element.user}} </a> <br>
-              {% endif %}
-              {% if user == element.user %}
-                <a id="{{element.id}}editLink" onclick="editPost(this.id)" href="javascript:void(0)"> Edit</a>
-              {% endif %}
-                <div>
-                  <textarea  spellcheck="false" id="{{element.id}}EditField" placeholder="Edit Post" style="display: none;" class="form-control" aria-label="With textarea"></textarea>
-                  <button id="{{element.id}}editButton" style="display: none;" type="button"  onclick='edit(this.id)' class="btn btn-primary">Save Changes</button>
-                </div>
-            </div>
-            <div id="{{element.id}}content" class="elemPost" >{{element.post}}</div>
-            <div class="elemTimeStamp" >{{element.timestamp}}</div>
-            </div>
-        </div>
-
-        <br>
-
+  
+        <div id="{{element.id}}numLikes" class="numLikes">{{element.likes}}</div>
+  
+      </div>
+      <br>
+  
       {% endfor %}
     </div>
-
+  
 </div>
   
 
@@ -159,9 +172,7 @@ function edit(idB) {
   fetch(`/posts/${id}`)
   .then(response => response.json())
   .then(result => {
-  $(`#${id}content`).html(`
-   ${post}
-  `);
+  $(`#${id}content`).html(`${post}`);
 
   });
 

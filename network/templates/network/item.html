@@ -152,18 +152,20 @@
 <div id='price'>${{listing.price}}</div>
 <br>
 
-<form id="placedBidForm" method='post' onsubmit="addBid();"></form>
+<form id="placedBidForm" method='post'></form>
 {% if user.is_authenticated and not ended %}
-
     {% if owner %}
-    {{count}} Bid(s) so far. The highest bid right now is ${{highest}} which was placed by {{person.user.username}}
+        {% if person.user.username %}
+            {{count}} Bid(s) so far. The highest bid right now is ${{highest}} which was placed by {{person.user.username}}
+        {% else %}
+            {{count}} Bid(s) so far.
+        {% endif %}
     {% else %}
-    
         {% csrf_token %}
         <label id="bidCount">{{count}}</label> Bid(s) so far. Your bid is the current bid.
         <br>
         <input id="myBid" placeholder="Your Bid" name='bid'>
-    <button class="final" type="submit" >
+    <button onclick="addBid();" type="submit" >
     Place Bid
     </button>
     {% endif %}
@@ -319,6 +321,7 @@
 
         
         function addBid() {
+            
             var id = document.getElementById('listingID').value;
             var bid = document.getElementById("myBid").value;
 

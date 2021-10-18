@@ -2,71 +2,377 @@
 
 <!DOCTYPE html>
 
+<style>
+
+    @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+    @import url('https://fonts.googleapis.com/css?family=Raleway:200');
+
+
+    .preserve-3d {
+        transform-style: preserve-3d;
+        -webkit-transform-style: preserve-3d;
+    }
+
+    .postContents {
+        position: relative;
+        top: 20px;
+        
+    }
+
+
+    .editButton {
+        font-weight: bold;
+        bottom: 20px;
+        color: black;
+    }
+
+    .editting {
+        position: relative;
+        /* right: 350px; */
+    }
+
+    *:focus {
+        outline: 0 !important;
+    }
+
+    *,
+    button:focus,
+    button::selection {
+        outline: none;
+    }
+
+    #post:focus,
+    #post:hover,
+    .editfield:focus,
+    .editfield:hover {
+        background: #333 repeat;
+        color: white;
+    }
+
+    .center {
+        display: block;
+        margin-left: auto;
+        margin-right: auto;
+    }
+
+
+    #post {
+        overflow: hidden;
+        word-wrap: break-word;
+        resize: none;
+        height: 200px;
+        width: 560px;
+        font-weight: normal;
+        font-size: 21px;
+        resize: none;
+        line-height: 25px;
+        padding-left: 20px;
+        padding-right: 20px;
+        padding-top: 25px;
+        padding-bottom: 25px;
+        background-repeat: repeat-y, repeat;
+    }
+
+
+    h3 {
+        color: white;
+    }
+
+
+    button:hover,
+    button:active {
+        border: 1px solid #140d50;
+        zoom: 1;
+        filter: alpha(opacity=80);
+        opacity: 0.8;
+    }
+
+    #all-posts {
+        font-family: 'Raleway';
+    }
+
+
+    .container {
+        position: relative;
+        bottom: 40px;
+        right: 700px;
+        width: 1px;
+        height: 1px;
+    }
+
+    .container .love {
+        font-size: 0.9rem;
+        color: #ff4f8f;
+    }
+
+    .container .wrapper {
+        padding-top: 50px;
+    }
+
+    .container .wrapper .like-button {
+        position: relative;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #ccc;
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        margin: 0 auto;
+        text-decoration: none;
+        overflow: hidden;
+    }
+
+    .container .wrapper .like-button .like-overlay {
+        display: block;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #ff4f8f;
+        -webkit-transform: scale(0);
+        transform: scale(0);
+        -webkit-transition: all .4s;
+        transition: all .4s;
+        z-index: 0;
+    }
+
+    .container .wrapper .like-button i.not-liked {
+        display: block;
+        color: #fff;
+        position: relative;
+        z-index: 1;
+    }
+
+    .container .wrapper .like-button i.is-liked {
+        display: none;
+        color: #fff;
+        position: relative;
+        z-index: 1;
+    }
+
+    .container .wrapper .like-button.is-active .like-overlay {
+        -webkit-transform: scale(1);
+        transform: scale(1);
+    }
+
+    .container .wrapper .like-button.is-active i.not-liked {
+        display: none;
+    }
+
+    .container .wrapper .like-button.is-active i.is-liked {
+        display: block;
+    }
+
+    @keyframes bouncy {
+
+        from,
+        to {
+            -webkit-transform: scale(1, 1);
+        }
+
+        25% {
+            -webkit-transform: scale(0.9, 1.1);
+        }
+
+        50% {
+            -webkit-transform: scale(1.1, 0.9);
+        }
+
+        75% {
+            -webkit-transform: scale(0.95, 1.05);
+        }
+    }
+
+    @keyframes bouncy {
+
+        from,
+        to {
+            -webkit-transform: scale(1, 1);
+            transform: scale(1, 1);
+        }
+
+        25% {
+            -webkit-transform: scale(0.9, 1.1);
+            transform: scale(0.9, 1.1);
+        }
+
+        50% {
+            -webkit-transform: scale(1.1, 0.9);
+            transform: scale(1.1, 0.9);
+        }
+
+        75% {
+            -webkit-transform: scale(0.95, 1.05);
+            transform: scale(0.95, 1.05);
+        }
+    }
+
+
+    #followers {
+        color: white;
+        font-weight: bold;
+        font-size: 24px;
+        position: relative;
+        left: 780px;
+        top: 130px;
+    }
+
+    #following {
+        color: white;
+        font-weight: bold;
+        font-size: 24px;
+        position: relative;
+        left: 960px;
+        top: 94px;
+    }
+
+
+    .numLikes {
+        position: relative;
+        left: 90px;
+        top: 15px;
+    }
+
+    .card-text {
+        white-space: pre-wrap;
+    }
+
+
+    .link-button {
+        width: 50px;
+        height: 50px;
+        border-radius: 50%;
+        background: #6dacff;
+        position: absolute;
+        bottom: 20px;
+        right: 20px;
+        display: -webkit-box;
+        display: flex;
+        -webkit-box-pack: center;
+        justify-content: center;
+        -webkit-box-align: center;
+        align-items: center;
+        -webkit-transition: all .4s;
+        transition: all .4s;
+    }
+
+    .link-button img {
+        width: 32px;
+        height: 32px;
+        display: block;
+    }
+
+    .link-button:hover {
+        -webkit-transform: scale(1.1) rotate(180deg);
+        transform: scale(1.1) rotate(180deg);
+        background: #ff4f8f;
+    }
+
+    .fade-out {
+        animation: fade 2s;
+        -webkit-animation: fade 2s;
+        -moz-animation: fade 2s;
+    }
+
+    /* Animate opacity */
+    @keyframes fade {
+        from {
+            opacity: 1
+        }
+
+        to {
+            opacity: 0
+        }
+    }
+
+    @-moz-keyframes fade {
+        from {
+            opacity: 1
+        }
+
+        to {
+            opacity: 0
+        }
+    }
+
+    @keyframes fade {
+        from {
+            opacity: 1
+        }
+
+        to {
+            opacity: 0
+        }
+    }
+</style>
+
+
 {% block style %}{% endblock %}
 
 <html>
-    
-    <head>
-        <title>{% block title %}Social Network{% endblock %}</title>
-        <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
-        <link href="{% static 'network/styles.css' %}" rel="stylesheet">
-    </head>
-    
-    
-    <style>
-        @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
-        @import url('https://fonts.googleapis.com/css?family=Raleway:200');
-    </style>
-      
-    <body>
 
-        <nav class="navbar navbar-expand-lg navbar-light bg-light">
-            <a class="navbar-brand" href="{% url 'index' %}">Network</a>
-            <div>
-              <ul class="navbar-nav mr-auto">
+<head>
+    <title>{% block title %}Social Network{% endblock %}</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css"
+        integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+</head>
+
+<style>
+    @import url('https://fonts.googleapis.com/css?family=Roboto+Condensed');
+    @import url('https://fonts.googleapis.com/css?family=Raleway:200');
+</style>
+
+<body>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light">
+        <a class="navbar-brand" href="{% url 'index' %}">Network</a>
+        <div>
+            <ul class="navbar-nav mr-auto">
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="#"><strong>{{ user.username }}</strong></a>
+                </li>
                 {% endif %}
                 <li class="nav-item">
-                  <a class="nav-link" href="{% url 'index' %}">All Posts</a>
+                    <a class="nav-link" href="{% url 'index' %}">All Posts</a>
                 </li>
                 {% if user.is_authenticated %}
-                    <li class="nav-item">
-                        <a id="following-posts" class="nav-link" href="{% url 'following' %}">Following</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'auctions' %}">Auctions</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'mail' %}">Mail</a>
-                    </li>
+                <li class="nav-item">
+                    <a id="following-posts" class="nav-link" href="{% url 'following' %}">Following</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'logout' %}">Log Out</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'auctions' %}">Auctions</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'mail' %}">Mail</a>
+                </li>
                 {% else %}
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'login' %}">Log In</a>
-                    </li>
-                    <li class="nav-item">
-                        <a class="nav-link" href="{% url 'register' %}">Register</a>
-                    </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'login' %}">Log In</a>
+                </li>
+                <li class="nav-item">
+                    <a class="nav-link" href="{% url 'register' %}">Register</a>
+                </li>
                 {% endif %}
-              </ul>
-            </div>
-          </nav>
-        
-        <div class="body">
-            {% block body %}
-            {% endblock %}
+            </ul>
         </div>
-    </body>
+    </nav>
+
+        {% block body %}
+        {% endblock %}
+</body>
 
 
-    {% block script %}{% endblock %}
+{% block script %}{% endblock %}
 
 
-
-    
 </html>
