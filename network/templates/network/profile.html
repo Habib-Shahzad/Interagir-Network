@@ -103,9 +103,9 @@ window.addEventListener( "pageshow", function ( event ) {
 });
 
   var name = document.getElementById('profilename').value;
+  var user = document.querySelector('#username').value;
 
   function displayFollowInfo() {
-
     fetch(`getfollow/${name}`)
       .then(response => response.json())
       .then(result => {
@@ -117,6 +117,10 @@ window.addEventListener( "pageshow", function ( event ) {
         $('#numFollowers').html(numFollowers);
         $('#numFollowing').html(numFollowing);
       })
+
+    if (user == name) {}
+
+    else {
 
     fetch(`followed/${name}`)
       .then(response => response.json())
@@ -131,7 +135,8 @@ window.addEventListener( "pageshow", function ( event ) {
       })
 
     document.getElementById('followButton').style.display = 'block';
-
+    
+  }
 
   }
 
@@ -253,7 +258,7 @@ window.addEventListener( "pageshow", function ( event ) {
 
 
   function likePosts() {
-    var user = document.querySelector('#username').value;
+    // var user = document.querySelector('#username').value;
     fetch(`/profileposts/${name}`)
       .then(response => response.json())
       .then(result => {
