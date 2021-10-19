@@ -13,12 +13,15 @@ urlpatterns = [
     path('addlike/<int:id>', views.addlike, name='addlike'),
     path('likes', views.likes, name='likes'),
     path('profile/<str:name>', views.profile, name='profile'),
-    path('follow/<str:name>/<int:boo>', views.follow, name='follow'),
-    path('followed/<str:name>', views.followed, name='followed'),
+    path('profileposts/<str:name>', views.JSONprofilePosts, name='JSONprofile'),
+    path('followingposts', views.JSONfollowPosts, name='JSONfollowPosts'),
+
+    path('profile/follow/<str:name>/<int:boo>', views.follow, name='follow'),
+    path('profile/followed/<str:name>', views.followed, name='followed'),
     path('following', views.following, name='following'),
     path('posts/<int:ID>', views.getpost, name='getpost'),
     path('edit/<int:ID>', views.edit, name='edit'),
-    path('getfollow/<str:name>', views.getfollow, name='getfollow'),
+    path('profile/getfollow/<str:name>', views.getfollow, name='getfollow'),
 
     path('auctions', views.auctions, name='auctions'),
     path("closed", views.closed, name='closed'),

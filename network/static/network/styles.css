@@ -1,7 +1,7 @@
 body {
-    background:#222;
-    color: white;
-    font-size: 25px;
+  background:#222;
+  color: white;
+  font-size: 25px;
 }
 
 
@@ -12,283 +12,283 @@ body {
 
 
 #colorful {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 560px;
-  height: 200px;
-  color: white;
-  font-family: 'Raleway';
-  font-size: 2.5rem;
-  position: relative;
-  left: 430px;
+display: flex;
+align-items: center;
+justify-content: center;
+width: 560px;
+height: 200px;
+color: white;
+font-family: 'Raleway';
+font-size: 2.5rem;
+position: relative;
+left: 430px;
 }
 
 .gradient-border {
-  --borderWidth: 3px;
-  background: #1D1F20;
-  position: relative;
-  border-radius: var(--borderWidth);
-  padding-left:50px
+--borderWidth: 3px;
+background: #1D1F20;
+position: relative;
+border-radius: var(--borderWidth);
+padding-left:50px
 }
 
 
 .gradient-border:after {
-  content: '';
-  position: absolute;
-  top: calc(-1 * var(--borderWidth));
-  left: calc(-1 * var(--borderWidth));
-  height: calc(100% + var(--borderWidth) * 2);
-  width: calc(100% + var(--borderWidth) * 2);
-  background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
-  border-radius: calc(2 * var(--borderWidth));
-  z-index: -1;
-  animation: animatedgradient 3s ease alternate infinite;
-  background-size: 300% 300%;
+content: '';
+position: absolute;
+top: calc(-1 * var(--borderWidth));
+left: calc(-1 * var(--borderWidth));
+height: calc(100% + var(--borderWidth) * 2);
+width: calc(100% + var(--borderWidth) * 2);
+background: linear-gradient(60deg, #f79533, #f37055, #ef4e7b, #a166ab, #5073b8, #1098ad, #07b39b, #6fba82);
+border-radius: calc(2 * var(--borderWidth));
+z-index: -1;
+animation: animatedgradient 3s ease alternate infinite;
+background-size: 300% 300%;
 }
 
 
 @keyframes animatedgradient {
-    0% {
-        background-position: 0% 50%;
-    }
-    50% {
-        background-position: 100% 50%;
-    }
-    100% {
-        background-position: 0% 50%;
-    }
+  0% {
+      background-position: 0% 50%;
+  }
+  50% {
+      background-position: 100% 50%;
+  }
+  100% {
+      background-position: 0% 50%;
+  }
 }
 
 
 .preserve-3d {
-    transform-style: preserve-3d;
-    -webkit-transform-style: preserve-3d;
+  transform-style: preserve-3d;
+  -webkit-transform-style: preserve-3d;
 }
 
 
 .editButton {
-  font-weight: bold; bottom:20px;
-  color: black;
+font-weight: bold; bottom:20px;
+color: black;
 }
 
 .editting {
-  position: relative;
-  /* right: 350px; */
+position: relative;
+/* right: 350px; */
 }
 
-    *:focus {
-    outline: 0 !important;
-    }
-    * , button:focus, button::selection{ outline: none;  }
+  *:focus {
+  outline: 0 !important;
+  }
+  * , button:focus, button::selection{ outline: none;  }
 
-    #post:focus, #post:hover, .editfield:focus, .editfield:hover {
-    background:#333 repeat;   
-    color: white;
-    }
+  #post:focus, #post:hover, .editfield:focus, .editfield:hover {
+  background:#333 repeat;   
+  color: white;
+  }
 
-    .center {
-      display: block; margin-left: auto; margin-right: auto;
-    }
-
-
-    #post {
-    overflow: hidden; word-wrap: break-word; resize: none; height: 200px; width:560px;
-    font-weight:normal; font-size:21px;
-    resize:none;
-    line-height:25px;
-    padding-left:20px; padding-right:20px; padding-top:25px; padding-bottom:25px;
-    background-repeat:repeat-y, repeat;
-    }
+  .center {
+    display: block; margin-left: auto; margin-right: auto;
+  }
 
 
-    h3 {color: white;}
+  #post {
+  overflow: hidden; word-wrap: break-word; resize: none; height: 200px; width:560px;
+  font-weight:normal; font-size:21px;
+  resize:none;
+  line-height:25px;
+  padding-left:20px; padding-right:20px; padding-top:25px; padding-bottom:25px;
+  background-repeat:repeat-y, repeat;
+  }
 
 
-    button:hover, button:active  {
-    border: 1px solid #140d50;
-    zoom: 1;
-    filter: alpha(opacity=80);
-    opacity: 0.8;
-    }
+  h3 {color: white;}
 
-    #all-posts {
-        font-family: 'Raleway';
-    }
+
+  button:hover, button:active  {
+  border: 1px solid #140d50;
+  zoom: 1;
+  filter: alpha(opacity=80);
+  opacity: 0.8;
+  }
+
+  #all-posts {
+      font-family: 'Raleway';
+  }
 
 
 .container {
-  position: relative;
-  bottom: 40px;
-  right: 700px;
-  width: 1px;
-  height: 1px;
+position: relative;
+bottom: 40px;
+right: 700px;
+width: 1px;
+height: 1px;
 }
 
 .container .love {
-  font-size: 0.9rem;
-  color: #ff4f8f;
+font-size: 0.9rem;
+color: #ff4f8f;
 }
 .container .wrapper {
-  padding-top: 50px;
+padding-top: 50px;
 }
 .container .wrapper .like-button {
-  position: relative;
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #ccc;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-          align-items: center;
-  margin: 0 auto;
-  text-decoration: none;
-  overflow: hidden;
+position: relative;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+background: #ccc;
+display: -webkit-box;
+display: flex;
+-webkit-box-pack: center;
+        justify-content: center;
+-webkit-box-align: center;
+        align-items: center;
+margin: 0 auto;
+text-decoration: none;
+overflow: hidden;
 }
 .container .wrapper .like-button .like-overlay {
-  display: block;
-  position: absolute;
-  top: 0; left: 0; width: 50px; height: 50px;
-  border-radius: 50%;
-  background: #ff4f8f;
-  -webkit-transform: scale(0); transform: scale(0);
-  -webkit-transition: all .4s; transition: all .4s;
-  z-index: 0;
+display: block;
+position: absolute;
+top: 0; left: 0; width: 50px; height: 50px;
+border-radius: 50%;
+background: #ff4f8f;
+-webkit-transform: scale(0); transform: scale(0);
+-webkit-transition: all .4s; transition: all .4s;
+z-index: 0;
 }
 .container .wrapper .like-button i.not-liked {
-  display: block;
-  color: #fff;
-  position: relative;
-  z-index: 1;
+display: block;
+color: #fff;
+position: relative;
+z-index: 1;
 }
 .container .wrapper .like-button i.is-liked {
-  display: none;
-  color: #fff;
-  position: relative;
-  z-index: 1;
+display: none;
+color: #fff;
+position: relative;
+z-index: 1;
 }
 .container .wrapper .like-button.is-active .like-overlay {
-  -webkit-transform: scale(1); transform: scale(1);
+-webkit-transform: scale(1); transform: scale(1);
 }
 .container .wrapper .like-button.is-active i.not-liked {
-  display: none;
+display: none;
 }
 .container .wrapper .like-button.is-active i.is-liked {
-  display: block;
+display: block;
 }
 
 @keyframes bouncy {
-  from, to {
-    -webkit-transform: scale(1, 1);
-  }
-  25% {
-    -webkit-transform: scale(0.9, 1.1);
-  }
-  50% {
-    -webkit-transform: scale(1.1, 0.9);
-  }
-  75% {
-    -webkit-transform: scale(0.95, 1.05);
-  }
+from, to {
+  -webkit-transform: scale(1, 1);
+}
+25% {
+  -webkit-transform: scale(0.9, 1.1);
+}
+50% {
+  -webkit-transform: scale(1.1, 0.9);
+}
+75% {
+  -webkit-transform: scale(0.95, 1.05);
+}
 }
 
 @keyframes bouncy {
-  from, to {
-    -webkit-transform: scale(1, 1);
-            transform: scale(1, 1);
-  }
-  25% {
-    -webkit-transform: scale(0.9, 1.1);
-            transform: scale(0.9, 1.1);
-  }
-  50% {
-    -webkit-transform: scale(1.1, 0.9);
-            transform: scale(1.1, 0.9);
-  }
-  75% {
-    -webkit-transform: scale(0.95, 1.05);
-            transform: scale(0.95, 1.05);
-  }
+from, to {
+  -webkit-transform: scale(1, 1);
+          transform: scale(1, 1);
+}
+25% {
+  -webkit-transform: scale(0.9, 1.1);
+          transform: scale(0.9, 1.1);
+}
+50% {
+  -webkit-transform: scale(1.1, 0.9);
+          transform: scale(1.1, 0.9);
+}
+75% {
+  -webkit-transform: scale(0.95, 1.05);
+          transform: scale(0.95, 1.05);
+}
 }
 
 
 #followers {
-  color: white;
-  font-weight: bold; 
-  font-size: 24px;
-  position: relative;
-  left: 780px;
-  top: 130px;
+color: white;
+font-weight: bold; 
+font-size: 24px;
+position: relative;
+left: 780px;
+top: 130px;
 }
 
 #following {
-  color: white;
-  font-weight: bold;
-  font-size: 24px;
-  position: relative; 
-  left: 960px;
-  top: 94px;
+color: white;
+font-weight: bold;
+font-size: 24px;
+position: relative; 
+left: 960px;
+top: 94px;
 }
 
 
 .numLikes {
-  position: relative;
-  left: 90px;
-  top: 15px;
+position: relative;
+left: 90px;
+top: 15px;
 }
 
 .card-text {
-  white-space: pre-wrap;
+white-space: pre-wrap;
 }
 
 
 .link-button {
-  width: 50px;
-  height: 50px;
-  border-radius: 50%;
-  background: #6dacff;
-  position: absolute;
-  bottom: 20px;
-  right: 20px;
-  display: -webkit-box;
-  display: flex;
-  -webkit-box-pack: center;
-          justify-content: center;
-  -webkit-box-align: center;
-          align-items: center;
-  -webkit-transition: all .4s;
-  transition: all .4s;
+width: 50px;
+height: 50px;
+border-radius: 50%;
+background: #6dacff;
+position: absolute;
+bottom: 20px;
+right: 20px;
+display: -webkit-box;
+display: flex;
+-webkit-box-pack: center;
+        justify-content: center;
+-webkit-box-align: center;
+        align-items: center;
+-webkit-transition: all .4s;
+transition: all .4s;
 }
 .link-button img {
-  width: 32px;
-  height: 32px;
-  display: block;
+width: 32px;
+height: 32px;
+display: block;
 }
 .link-button:hover {
-  -webkit-transform: scale(1.1) rotate(180deg);
-          transform: scale(1.1) rotate(180deg);
-  background: #ff4f8f;
+-webkit-transform: scale(1.1) rotate(180deg);
+        transform: scale(1.1) rotate(180deg);
+background: #ff4f8f;
 }
 
 .fade-out {
-  animation: fade 2s;
-  -webkit-animation: fade 2s;
-  -moz-animation: fade 2s;
+animation: fade 2s;
+-webkit-animation: fade 2s;
+-moz-animation: fade 2s;
 }
 
 /* Animate opacity */
 @keyframes fade {
-  from { opacity: 1 }
-  to { opacity: 0 }
+from { opacity: 1 }
+to { opacity: 0 }
 }
 @-moz-keyframes fade {
-  from { opacity: 1 }
-  to { opacity: 0 }
+from { opacity: 1 }
+to { opacity: 0 }
 }
 @keyframes fade {
-  from { opacity: 1 }
-  to { opacity: 0 }
+from { opacity: 1 }
+to { opacity: 0 }
 }

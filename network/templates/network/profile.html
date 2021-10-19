@@ -4,196 +4,265 @@
 {% block style %}
 
 {% load static %}
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons"
-    rel="stylesheet">
-    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
-    <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css" integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
- 
+<link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css"
+  integrity="sha384-Gn5384xqQ1aoWXA+058RXPxPg6fy4IWvTNh0E263XmFcJlSAwiGgFAW/dAiS6JXm" crossorigin="anonymous">
+
 {% endblock %}
 
 {% block body %}
 <div id="docbody">
-    <input id="username" type="hidden" value={{user}} />
+  <input id="username" type="hidden" value={{user}} />
+  <input id="profilename" type="hidden" value="{{person.username}}">
 
-    <h3 id="heading">Profile Posts</h3>
+  <button id="followButton" onclick="followMe()" style="display: none;" class="btn btn-primary"></button> <br>
 
-    <div id="all-posts">
+  <div id="labelFollowers" style="display: none;">
+    <label>Number of Followers: </label> <label id="numFollowers">0</label>
+  </div>
 
-      {% for element in posts %}
-  
-      <div id='{{element.id}}Post'>
-  
-        <div class="postContents" class="card" style="width: 28rem;color: black;">
-          <div class="card-body">
-            {% if user.is_authenticated %}
-            <a href="profile/{{element.user}}" class="card-title"> {{element.user}} </a>
-            {% else %}
-            <a class="card-title">{{element.user}}</a>
-            {% endif %}
-            {% if user == element.user %}
-            <div> <a id="{{element.id}}editLink" class="btn btn-primary" onclick="editPost(this.id)"
-                href="javascript:void(0)"> Edit</a> </div>
-            {% endif %}
-  
-            <div>
-              <textarea spellcheck="false" id="{{element.id}}EditField" placeholder="Edit Post" style="display: none;"
-                class="form-control" aria-label="With textarea"></textarea>
-              <button id="{{element.id}}editButton" style="display: none;" type="button" onclick='edit(this.id)'
-                class="btn btn-primary">Save Changes</button>
-            </div>
-  
-            <p id="{{element.id}}content" class="card-text">{{element.post}}</p>
-            <div class="elemTimeStamp">{{element.timestamp}}</div>
+  <div id="labelFollowing" style="display: none;">
+    <label>Number of Following: </label> <label id="numFollowing">0</label>
+  </div>
+  <h3 id="heading">Profile Posts</h3>
+
+  <div id="all-posts">
+
+    {% for element in posts %}
+
+    <div id='{{element.id}}Post'>
+
+      <div class="card" style="width: 28rem;color: black;">
+        <div class="card-body">
+          {% if user.is_authenticated %}
+          <a href="profile/{{element.user}}" class="card-title"> {{element.user}} </a>
+          {% else %}
+          <a class="card-title">{{element.user}}</a>
+          {% endif %}
+          {% if user == element.user %}
+          <div> <a id="{{element.id}}editLink" class="btn btn-primary" onclick="editPost(this.id)"
+              href="javascript:void(0)"> Edit</a> </div>
+          {% endif %}
+
+          <div>
+            <textarea spellcheck="false" id="{{element.id}}EditField" placeholder="Edit Post" style="display: none;"
+              class="form-control" aria-label="With textarea"></textarea>
+            <button id="{{element.id}}editButton" style="display: none;" type="button" onclick='edit(this.id)'
+              class="btn btn-primary">Save Changes</button>
           </div>
-  
+
+          <p id="{{element.id}}content" class="card-text">{{element.post}}</p>
+          <div class="elemTimeStamp">{{element.timestamp}}</div>
         </div>
-  
-        {% if user.is_authenticated %}
-  
-        <div class="container">
-          <div class="wrapper">
-            <a id="{{element.id}}likeButton" onclick="toggleLike(this.id); addlike(this.id)" href="javascript:void(0);"
-              class="like-button">
-              <i class="material-icons not-liked bouncy">favorite_border</i>
-              <i class="material-icons is-liked bouncy">favorite</i>
-              <span class="like-overlay"></span>
-            </a>
-  
-          </div>
-        </div>
-  
-        {% endif %}
-  
-        <div id="{{element.id}}numLikes" class="numLikes">{{element.likes}}</div>
-  
+
       </div>
-      <br>
-  
-      {% endfor %}
+
+      {% if user.is_authenticated %}
+
+      <div id="{{element.id}}LikeContainer" style="display: none;" class="container">
+        <div class="wrapper">
+          <a id="{{element.id}}likeButton" onclick="toggleLike(this.id); addlike(this.id)" href="javascript:void(0);"
+            class="like-button">
+            <i class="material-icons not-liked bouncy">favorite_border</i>
+            <i class="material-icons is-liked bouncy">favorite</i>
+            <span class="like-overlay"></span>
+          </a>
+
+        </div>
+      </div>
+
+      {% endif %}
+
+      <div id="{{element.id}}numLikes" class="numLikes">{{element.likes}}</div>
+
     </div>
-  
+    <br>
+
+    {% endfor %}
+  </div>
+
 </div>
-  
+
 
 {% endblock %}
 
 
 {% block script %}
 
-{% if user.is_authenticated %} 
+{% if user.is_authenticated %}
 <script language="javascript">
 
-
-function toggleLike(id) {
-    $(`#${id}`).toggleClass('is-active');
-}
-
-document.addEventListener('DOMContentLoaded', function() {
-    likePosts();
+window.addEventListener( "pageshow", function ( event ) {
+  var historyTraversal = event.persisted || 
+                         ( typeof window.performance != "undefined" && 
+                              window.performance.navigation.type === 2 );
+  if ( historyTraversal ) {
+    window.location.reload();
+  }
 });
 
+  var name = document.getElementById('profilename').value;
 
+  function displayFollowInfo() {
 
-function addlike(id) {
-
-   var active = $(`#${id}`).hasClass('is-active');
-   id = id.replace("likeButton", "");
-
-   if (active) {
-    var count = $(`#${id}numLikes`).html();
-    $(`#${id}numLikes`).html(parseInt(count)+1)
-   }
-
-   else {
-    var count = $(`#${id}numLikes`).html();
-    $(`#${id}numLikes`).html(parseInt(count)-1) 
-   }
-
-   fetch(`/addlike/${id}`, {
-    method: 'POST',
-    body: JSON.stringify({
-        active: active
-    })
-  })
-
-  .then(response => response.json())
-  .then(result => {
-      console.log(result)
-  })  
-}
-
-
-
-
-
-function isliked(id) {
-  fetch('/likes')
+    fetch(`getfollow/${name}`)
       .then(response => response.json())
-        .then(result => {
-        result.forEach((element) => {
-          if (id == element) {
-            $(`#${element}likeButton`).toggleClass('is-active'); }
+      .then(result => {
+        var numFollowers = result.followers;
+        var numFollowing = result.following;
+
+        document.getElementById('labelFollowers').style.display = 'block';
+        document.getElementById('labelFollowing').style.display = 'block';
+        $('#numFollowers').html(numFollowers);
+        $('#numFollowing').html(numFollowing);
       })
 
-      }); 
-}
+    fetch(`followed/${name}`)
+      .then(response => response.json())
+      .then(result => {
+        var followed = result.followed;
+        if (followed) {
+          document.getElementById('followButton').innerHTML = 'Unfollow';
+        }
+        else {
+          document.getElementById('followButton').innerHTML = 'Follow';
+        }
+      })
+
+    document.getElementById('followButton').style.display = 'block';
+
+
+  }
+
+  displayFollowInfo();
+
+
+  function followMe() {
+
+    fetch(`followed/${name}`)
+      .then(response => response.json())
+      .then(result => {
+        var followed = result.followed;
+        if (followed) {
+          fetch(`follow/${name}/0`);
+          var count = parseInt($(`#numFollowers`).html());
+          $(`#numFollowers`).html(count - 1);
+          $('#followButton').html('Follow');
+        }
+        else {
+          fetch(`follow/${name}/1`);
+          var count = parseInt($(`#numFollowers`).html());
+          $(`#numFollowers`).html(count + 1);
+          $('#followButton').html('Unfollow');
+        }
+      })
+  }
+
+  function toggleLike(id) {
+    $(`#${id}`).toggleClass('is-active');
+  }
+
+  document.addEventListener('DOMContentLoaded', function () {
+    likePosts();
+  });
+
+  function addlike(id) {
+    var active = $(`#${id}`).hasClass('is-active');
+    id = id.replace("likeButton", "");
+
+    if (active) {
+      var count = $(`#${id}numLikes`).html();
+      $(`#${id}numLikes`).html(parseInt(count) + 1)
+    }
+
+    else {
+      var count = $(`#${id}numLikes`).html();
+      $(`#${id}numLikes`).html(parseInt(count) - 1)
+    }
+
+    fetch(`/addlike/${id}`, {
+      method: 'POST',
+      body: JSON.stringify({
+        active: active
+      })
+    })
+
+      .then(response => response.json())
+      .then(result => {
+        console.log(result)
+      })
+  }
+
+
+  function isliked(id) {
+    fetch('/likes')
+      .then(response => response.json())
+      .then(result => {
+        result.forEach((element) => {
+          if (id == element) {
+            $(`#${element}likeButton`).toggleClass('is-active');
+          }
+        })
+
+      });
+  }
 
 
 
-function editPost(id) {
-  
+  function editPost(id) {
+
     var postId = id.replace("editLink", "");
-    
+
     document.getElementById(`${postId}EditField`).style.display = 'block';
     document.getElementById(`${postId}editButton`).style.display = 'block';
 
     fetch(`/posts/${postId}`)
-  .then(response => response.json())
-  .then(result => {
-    document.getElementById(`${postId}EditField`).value = `${result.post}`;
-})  
+      .then(response => response.json())
+      .then(result => {
+        document.getElementById(`${postId}EditField`).value = `${result.post}`;
+      })
 
-}
+  }
 
 
-function edit(idB) {
-  var id = idB.replace("editButton", "");
+  function edit(idB) {
+    var id = idB.replace("editButton", "");
 
-  var post =  document.getElementById(`${id}EditField`).value ;
+    var post = document.getElementById(`${id}EditField`).value;
 
     fetch(`/edit/${id}`, {
-    method: 'POST',
-    headers: {'Content-Type': 'text/plain', },
-    body: JSON.stringify({
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain', },
+      body: JSON.stringify({
         post: post
+      })
     })
-  })
 
-  fetch(`/posts/${id}`)
-  .then(response => response.json())
-  .then(result => {
-  $(`#${id}content`).html(`${post}`);
+    fetch(`/posts/${id}`)
+      .then(response => response.json())
+      .then(result => {
+        $(`#${id}content`).html(`${post}`);
 
-  });
+      });
 
-  document.getElementById(`${id}EditField`).style.display = 'none';
+    document.getElementById(`${id}EditField`).style.display = 'none';
     document.getElementById(`${id}editButton`).style.display = 'none';
 
-}
+  }
 
 
-function likePosts() { 
-  var user = document.querySelector('#username').value;
-
-  fetch(`/posts`)
-    .then(response => response.json())
-    .then(result => {
-    result.forEach((element) => {
-      isliked(`${element.id}`);
-    })
-})
-
-}
+  function likePosts() {
+    var user = document.querySelector('#username').value;
+    fetch(`/profileposts/${name}`)
+      .then(response => response.json())
+      .then(result => {
+        result.forEach((element) => {
+          isliked(`${element.id}`);
+          document.getElementById(`${element.id}LikeContainer`).style.display = 'block';
+        })
+      })
+  }
 
 </script>
 

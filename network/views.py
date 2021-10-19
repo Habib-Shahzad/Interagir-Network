@@ -39,11 +39,15 @@ def likes(request):
 @csrf_exempt
 @login_required
 def profile(request,name):
-    print(name)
     user = User.objects.get(username=name)
     posts = Post.objects.order_by("-timestamp").filter(user=user)
     return render(request, "network/profile.html", {'posts': posts, 'person': user})
 
+
+def JSONprofilePosts(request, name):
+    user = User.objects.get(username=name)
+    posts = Post.objects.order_by("-timestamp").filter(user=user)
+    return JsonResponse([post.serialize() for post in posts], status=201, safe=False)
 
 
 @csrf_exempt
@@ -85,6 +89,19 @@ def following(request):
 
     
     return render(request, "network/following.html", {'posts': lst})
+    
+def JSONfollowPosts(request):
+    user = request.user
+    followed = Follow.objects.all()
+    posts = Post.objects.order_by("-timestamp").all()
+    lst = []
+    for post in posts:
+        for foll in followed:
+            if user == foll.user and post.user == foll.following:
+                lst.append(post)
+
+    return JsonResponse([post.serialize() for post in lst], status=201, safe=False)
+
     
 
 
